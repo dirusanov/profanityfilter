@@ -39,7 +39,7 @@ setup(
     packages=find_packages(exclude=['tests']),
     install_requires=['inflection'],
     package_data={
-        'profanityfilter': ['data/badwords.txt'],
+        'profanityfilter': ['data/en_profane_words.txt', 'data/ru_profane_words.txt'],
     },
     entry_points={
         'console_scripts': [

@@ -5,7 +5,7 @@ import inflection
 
 
 class ProfanityFilter:
-    def __init__(self, **kwargs):
+    def __init__(self, languages=['en', ], **kwargs):
         """
         Returns a ProfanityFilter instance.
 
@@ -36,14 +36,21 @@ class ProfanityFilter:
 
         # Where to find the censored words
         self._BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-        self._words_file = os.path.join(self._BASE_DIR, 'data', 'badwords.txt')
+        self.words_files = []
+
+        if 'en' in languages:
+            self.words_files.append(os.path.join(self._BASE_DIR, 'data', 'en_profane_words.txt'))
+            self._words_file = os.path.join(self._BASE_DIR, 'data', 'badwords.txt')
+        if 'ru' in languages:
+            self.words_files.append(os.path.join(self._BASE_DIR, 'data', 'ru_profane_words.txt'))
 
         self._load_words()
 
     def _load_words(self):
         """Loads the list of profane words from file."""
-        with open(self._words_file, 'r') as f:
-            self._censor_list = [line.strip() for line in f.readlines()]
+        for word_file in self.words_files:
+            with open(word_file, 'r') as f:
+                self._censor_list.extend([line.strip() for line in f.readlines()])
 
     def define_words(self, word_list):
         """Define a custom list of profane words to be used instead of the default list."""
